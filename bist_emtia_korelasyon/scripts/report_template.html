@@ -1,0 +1,290 @@
+<title>BIST Emtia Haritası</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: tek kolon rapor; ozet -> grafikler -> tam tablo -> yontem. Terminal hissi icin ticker'lar mono. */
+:root{
+  --bg:#f5f6f3; --surface:#fcfcfb; --fg:#101412; --ink2:#4f5551; --muted:#7d837f; --line:#e0e2dc; --axis:#c3c6bd;
+  --accent:#1b6a55; --accent-soft:#e3efe9;
+  --pos:#2a78d6; --neg:#e34948; --s2:#eb6834;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --pos-rgb:42,120,214; --neg-rgb:227,73,72;
+  --f-display:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1110; --surface:#161a18; --fg:#eef0ec; --ink2:#c0c6c1; --muted:#8c938e; --line:#2a2f2c; --axis:#3a403c;
+  --accent:#5cbf9f; --accent-soft:#1d2d27; --pos:#3987e5; --neg:#e66767; --s2:#d95926;
+  --pos-rgb:57,135,229; --neg-rgb:230,103,103; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1110; --surface:#161a18; --fg:#eef0ec; --ink2:#c0c6c1; --muted:#8c938e; --line:#2a2f2c; --axis:#3a403c;
+  --accent:#5cbf9f; --accent-soft:#1d2d27; --pos:#3987e5; --neg:#e66767; --s2:#d95926;
+  --pos-rgb:57,135,229; --neg-rgb:230,103,103; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-body);margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:48px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.05;font-weight:700}
+h2{font-size:24px;font-weight:600}
+h3{font-size:16px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:14px}
+.lede{font-size:17px;color:var(--ink2);max-width:72ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font:13px var(--f-mono);color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+.sec-head{display:flex;flex-direction:column;gap:6px}
+.note{font-size:13px;color:var(--muted)}
+.findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.finding{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.finding h3{font-size:15px}
+.finding p{font-size:14px;color:var(--ink2)}
+.mono,.tk{font-family:var(--f-mono)}
+.tk{font-weight:600;letter-spacing:.02em}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);align-items:center}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--fg)}
+svg text{fill:var(--ink2);font:11px var(--f-body)}
+svg .tkl{font:600 11px var(--f-mono);fill:var(--fg)}
+.scroll{overflow-x:auto;min-width:0}
+.multiples{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.mult{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 12px 6px;position:relative;min-width:0}
+.mult h3{font-size:13px;display:flex;justify-content:space-between;gap:8px;min-height:3.2em}
+.mult h3 span{font:500 12px var(--f-body);color:var(--muted);text-align:right}
+.tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);font:12px/1.4 var(--f-body);padding:6px 9px;border-radius:6px;z-index:20;max-width:260px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls input,.controls select{font:14px var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.controls input{flex:1 1 220px}
+.controls input:focus-visible,.controls select:focus-visible,th button:focus-visible,tr.row:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.count{font:13px var(--f-mono);color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th{position:sticky;top:0;background:var(--surface);z-index:1;text-align:left;font-weight:600;color:var(--ink2);border-bottom:1px solid var(--axis);padding:0;white-space:nowrap}
+th button{all:unset;cursor:pointer;display:block;padding:8px 8px;width:100%;box-sizing:border-box}
+th button[aria-sort="ascending"]::after{content:" ▲";font-size:9px}
+th button[aria-sort="descending"]::after{content:" ▼";font-size:9px}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{text-align:right;font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
+tr.row{cursor:pointer}
+tr.row:hover td{background:var(--accent-soft)}
+td.co{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink2)}
+td.sek{max-width:180px;color:var(--ink2)}
+.tablebox{max-height:72vh;overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill i{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.p-guclu i{background:var(--good)} .p-orta i{background:var(--warn)} .p-zayif i{background:transparent;border:1.5px solid var(--muted)} .p-ters i{background:var(--crit);border-radius:1px;transform:rotate(45deg)}
+.p-zayif{color:var(--muted)}
+tr.detail td{background:var(--bg);padding:14px 16px}
+.detail-grid{display:flex;flex-direction:column;gap:10px}
+.detail-grid table{font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px 28px}
+.method div{display:flex;flex-direction:column;gap:4px}
+.method p{font-size:14px;color:var(--ink2)}
+.files{font:13px var(--f-mono);color:var(--ink2);display:flex;flex-direction:column;gap:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">BIST · Emtia · Korelasyon</div>
+    <h1>BIST Emtia Haritası</h1>
+    <p class="lede">Borsa İstanbul'daki her hisseyi iş modeline göre ilgili emtiayla (Tüpraş → rafineri marjı ve Brent, Ülker → kakao, Ereğli → çelik…) ya da emtiası olmayan şirketlerde en yakın dış etkenle eşleştirdik ve bu ilişkinin fiyatlara gerçekten yansıyıp yansımadığını {{hafta}} haftalık veriyle ölçtük.</p>
+    <div class="meta"><span><b>{{hisse}}</b> hisse</span><span><b>{{etken}}</b> emtia / etken</span><span>dönem <b>{{ilk_hafta}}</b> → <b>{{son_hafta}}</b></span><span>haftalık, USD bazlı getiriler</span></div>
+  </header>
+
+  <section>
+    <div class="sec-head"><div class="eyebrow">Özet</div><h2>Öne çıkan bulgular</h2></div>
+    <div class="findings"><!--__FINDINGS__--></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="eyebrow">Sıralama</div><h2>Emtiaya en güçlü bağlı hisseler</h2>
+      <p class="note">Beklenen yönde bağlantısı olan hisseler, teyit gücüne göre (ilk 30). Çubuk: BIST 100 etkisinden arındırılmış kısmi korelasyon (negatif çubuk = beklenen ters ilişki, ör. havayolu ↔ yakıt); nokta: ham korelasyon. Son 5 yıl (daha kısa geçmişli hisselerde tüm veri). Kur ve endeks etkenleri hariç.</p></div>
+    <div class="panel"><div class="legend"><span><i class="sw" style="background:var(--pos)"></i>Kısmi korelasyon (pozitif)</span><span><i class="sw" style="background:var(--neg)"></i>Kısmi korelasyon (negatif)</span><span><i class="sw" style="background:var(--pos);opacity:.35"></i>Soluk: zayıf (çoklu test düzeltmesini geçemedi)</span><span><i class="dot"></i>Ham korelasyon</span></div>
+      <div class="scroll" id="topchart"></div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="eyebrow">Sektörler</div><h2>Hangi sektörler emtiayla gerçekten hareket ediyor?</h2>
+      <p class="note">Ortalama doğrulanmış bağ gücü: her hissenin ilgili emtiasıyla kısmi korelasyonunun beklenen yöndeki büyüklüğü (havayolu için yakıtla ters hareket pozitif sayılır); bağı doğrulanmayan hisseler 0 sayılır. Parantez içinde sektördeki hisse sayısı; sağda güçlü/orta bağı olan hisse sayısı. En az 2 hisseli ana sektörler.</p></div>
+    <div class="panel"><div class="scroll" id="sekchart"></div><p class="note" id="seknone" style="margin-top:12px;max-width:none"></p></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="eyebrow">Zaman içinde</div><h2>İlişkiler ne kadar istikrarlı?</h2>
+      <p class="note">52 haftalık kayan korelasyon (ham, USD bazlı). Tüm panellerde aynı ölçek: −0,6 ile 1,0 arası. Kesikli çizgi sıfır.</p></div>
+    <div class="multiples" id="mults"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="eyebrow">Tüm hisseler</div><h2>Hisse bazında sonuçlar</h2>
+      <p class="note">Satıra tıklayınca gerekçe ve tüm etkenlerin detayı açılır. Korelasyonlar ham (1/3/5 yıl) ve piyasadan arındırılmış (kısmi). “Veri taraması”: 55 emtia ve sektör vekili arasında, yanlış keşif düzeltmesini (q &lt; 0,05) ve iki dönem istikrarını geçen en güçlü bağlantı. USD/TL: hissenin TL getirisinin Dolar/TL ile, BIST 100'den arındırılmış kısmi korelasyonu (pozitif = dolar yükselirken piyasadan iyi performans, ör. ihracatçı/dövizli bilanço).</p></div>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Hisse, şirket veya emtia ara (ör. kakao, THYAO)" aria-label="Ara">
+      <select id="fs" aria-label="Sektör"><option value="">Tüm sektörler</option></select>
+      <select id="fv" aria-label="Sonuç"><option value="">Tüm sonuçlar</option><option>Güçlü</option><option>Orta</option><option>Zayıf</option><option>Zayıf / anlamsız</option><option>Ters yönde</option><option>Yetersiz veri</option></select>
+      <span class="count" id="cnt"></span>
+    </div>
+    <div class="tablebox"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="eyebrow">Yöntem</div><h2>Nasıl hesaplandı, neye dikkat etmeli?</h2></div>
+    <div class="method">
+      <div><h3>Veri</h3><p>Haftalık kapanışlar (Yahoo Finance, hissebilanco.com üzerinden), en fazla 10 yıl. Hisseler temettü/bölünme düzeltmeli. Emtialar vadeli kontratların sürekli serisi; gübre, selüloz, petrokimya gibi vadelisi olmayan ürünler için sektörün küresel lider hissesi vekil olarak kullanıldı.</p></div>
+      <div><h3>Neden USD bazlı?</h3><p>TL fiyatlar kur nedeniyle sürekli yükseldiği için TL hisse fiyatı ile USD emtia fiyatı “birlikte artıyor” görünür; bu sahte bir korelasyondur. Hisseler Dolar/TL ile USD'ye çevrildi, getiri (değişim) üzerinden ölçüldü. Kur etkenleri için hissenin TL getirisi kullanıldı.</p></div>
+      <div><h3>Ham ve kısmi korelasyon</h3><p>Ham korelasyon, hissenin emtiayla birlikte hareket etme derecesidir. Ancak küresel risk iştahı hem BIST'i hem emtiaları aynı anda oynatır. Kısmi korelasyon BIST 100'ün (USD) etkisini çıkarır ve şirkete özgü emtia bağını gösterir.</p></div>
+      <div><h3>Sonuç etiketleri</h3><p><b>Güçlü:</b> kısmi kor. ≥ 0,30, q &lt; 0,05 ve son 5 yılın iki yarısında da aynı yön. <b>Orta:</b> ≥ 0,15 ve q &lt; 0,10. <b>Zayıf:</b> yön doğru, |t| ≥ 2 ama çoklu test düzeltmesini geçemedi. <b>Ters yönde:</b> |t| ≥ 3,3 ve beklenenin tersi. Her durumda ham ve kısmi korelasyon aynı işaretli ve |ham| ≥ 0,10 olmalı.</p></div>
+      <div><h3>Çoklu test ve tesadüf</h3><p>600 hisse × 55 etken ≈ 34 bin test yapınca |r| ≈ 0,2 düzeyinde onlarca eşleşme tamamen şans eseri çıkar. Bu yüzden Benjamini–Hochberg yanlış keşif oranı (q-değeri) kullanıldı. Ayrıca BIST 100 bazı küresel faktörlerle korele olduğundan, piyasa kontrol edilince ilişkisiz hisseler mekanik olarak negatif kısmi korelasyon alabilir; ham ve kısmi korelasyonun aynı yönü göstermesi şartı bunu eler.</p></div>
+      <div><h3>Sağlamlık kontrolleri</h3><p>1, 3, 5 yıl ve tüm dönem ayrı hesaplandı; 52 haftalık kayan korelasyonun işaret istikrarı, 1 hafta gecikmeli korelasyon ve 4 haftalık getirilerle korelasyon detay dosyasında. BIST'in ±%10 günlük limiti nedeniyle haftada %+65 / %−43'ü aşan hareketler (düzeltilmemiş bedelsiz vb.) veri dışı bırakıldı.</p></div>
+      <div><h3>Sınırlar</h3><p>Korelasyon nedensellik değildir. Türkiye'de fiyatı düzenlenen ürünlerde (şeker, süt, elektrik tarifesi, doğalgaz) küresel fiyat bağlantısı zayıftır. Fındık, çay, zeytinyağı, çinko gibi ürünlerin likit vadelisi yok. Bu çalışma yatırım tavsiyesi değildir.</p></div>
+    </div>
+    <div class="files"><span>Ham sonuçlar ve veri seti: bist_emtia_korelasyon/sonuclar/</span><span>hisse_ozet.csv · hisse_etken_detay.csv · sektor_ozet.csv · matris_*_kor_*.csv · bist_emtia_korelasyon.xlsx</span></div>
+  </section>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA=/*__DATA__*/null;
+const C=Object.fromEntries(DATA.cols.map((c,i)=>[c,i]));
+const NONCOM=new Set(["Dolar/TL","Euro/TL","BIST 100 (piyasa)","BIST Banka endeksi","Avrupa bankaları (EUFN)","ABD bankaları (KRE)","Gelişen piyasalar (EEM)","EUR/USD"]);
+const tip=document.getElementById('tip');
+const fmt=(v,d=2)=>v==null||Number.isNaN(v)?'–':v.toLocaleString('tr-TR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function showTip(e,html){tip.innerHTML=html;tip.hidden=false;const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+'px';tip.style.top=y+'px'}
+function hideTip(){tip.hidden=true}
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n}
+function pillClass(v){return v==='Güçlü'?'p-guclu':v==='Orta'?'p-orta':v==='Ters yönde'?'p-ters':'p-zayif'}
+function pill(v){return v?`<span class="pill ${pillClass(v)}"><i></i>${esc(v)}</span>`:'–'}
+
+/* ---------- 1. Top bar chart ---------- */
+function topChart(){
+  const OKV=new Set(['Güçlü','Orta','Zayıf']);
+  const rows=DATA.rows.filter(r=>r[C.temel_kismi_kor]!=null&&!NONCOM.has(r[C.en_iyi_temel_etken])&&OKV.has(r[C.temel_sonuc]))
+    .sort((a,b)=>b[C.temel_teyit_skor]-a[C.temel_teyit_skor]).slice(0,30);
+  const host=document.getElementById('topchart');host.innerHTML='';
+  const W=Math.max(host.clientWidth,560),rowH=24,top=26,L=Math.min(330,W*0.45),R=24,H=top+rows.length*rowH+8;
+  const svg=el('svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Emtiaya en güçlü bağlı 30 hisse'},host);
+  const vals=rows.flatMap(r=>[r[C.temel_kismi_kor],r[C.temel_ham_kor_5y]??r[C.temel_kismi_kor]]);
+  const lo=Math.min(-0.1,Math.floor(Math.min(...vals)*10)/10),hi=Math.max(0.6,Math.ceil(Math.max(...vals)*10)/10);
+  const x=v=>L+(v-lo)/(hi-lo)*(W-L-R);
+  for(let t=Math.ceil(lo*10)/10;t<=hi+1e-9;t+=0.1){const tx=x(t);el('line',{x1:tx,x2:tx,y1:top-6,y2:H-8,stroke:Math.abs(t)<1e-9?'var(--axis)':'var(--line)','stroke-width':1},svg);
+    if(Math.round(t*10)%2===0){const lb=el('text',{x:tx,y:14,'text-anchor':'middle'},svg);lb.textContent=fmt(t,1)}}
+  rows.forEach((r,i)=>{const y=top+i*rowH,pc=r[C.temel_kismi_kor],raw=r[C.temel_ham_kor_5y]??r[C.temel_ham_kor_3y];
+    const g=el('g',{},svg);
+    const lt=el('text',{x:8,y:y+rowH/2+4,class:'tkl'},g);lt.textContent=r[C.ticker];
+    const ft=el('text',{x:62,y:y+rowH/2+4},g);let fn=r[C.en_iyi_temel_etken]||'';const maxc=Math.floor((L-70)/6.2);ft.textContent=fn.length>maxc?fn.slice(0,maxc-1)+'…':fn;
+    const x0=x(0),x1=x(pc),bw=Math.abs(x1-x0),bx=Math.min(x0,x1),bh=12,by=y+(rowH-bh)/2;
+    const rr=Math.min(4,bw/2);
+    const p=pc>=0?`M${bx},${by}h${bw-rr}a${rr},${rr} 0 0 1 ${rr},${rr}v${bh-2*rr}a${rr},${rr} 0 0 1 -${rr},${rr}h-${bw-rr}z`:`M${bx+bw},${by}h-${bw-rr}a${rr},${rr} 0 0 0 -${rr},${rr}v${bh-2*rr}a${rr},${rr} 0 0 0 ${rr},${rr}h${bw-rr}z`;
+    el('path',{d:p,fill:pc>=0?'var(--pos)':'var(--neg)','fill-opacity':r[C.temel_sonuc]==='Zayıf'?0.35:1},g);
+    if(raw!=null)el('circle',{cx:x(raw),cy:y+rowH/2,r:4.5,fill:'var(--fg)',stroke:'var(--surface)','stroke-width':2},g);
+    const hit=el('rect',{x:0,y,width:W,height:rowH,fill:'transparent'},g);
+    hit.addEventListener('mousemove',e=>showTip(e,`<b>${esc(r[C.ticker])}</b> · ${esc(r[C.sirket])}<br>${esc(r[C.en_iyi_temel_etken])}<br>Kısmi: <b>${fmt(pc)}</b> · Ham (5y): ${fmt(raw)} · t: ${fmt(r[C.temel_t],1)}<br>Sonuç: ${esc(r[C.temel_sonuc])} (q = ${fmt(r[C.temel_q],3)})`));
+    hit.addEventListener('mouseleave',hideTip);
+  });
+}
+
+/* ---------- 2. Sector chart ---------- */
+function sekChart(){
+  const all=DATA.sek.filter(r=>r[3]!=null&&r[1]>=2);
+  const rows=all.filter(r=>r[3]>0.0005).sort((a,b)=>b[3]-a[3]);
+  const none=all.filter(r=>!(r[3]>0.0005)).map(r=>r[0]).sort((a,b)=>a.localeCompare(b,'tr'));
+  document.getElementById('seknone').textContent=none.length?`Doğrulanmış bağı olmayan ${none.length} ana sektör: ${none.join(', ')}.`:'';
+  const host=document.getElementById('sekchart');host.innerHTML='';
+  const W=Math.max(host.clientWidth,560),rowH=22,top=26,L=Math.min(300,W*0.42),R=110,H=top+rows.length*rowH+8;
+  const svg=el('svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Sektörlere göre medyan kısmi korelasyon'},host);
+  const lo=0,hi=Math.max(0.2,Math.ceil(Math.max(...rows.map(r=>r[3]))*20)/20);
+  const x=v=>L+(v-lo)/(hi-lo)*(W-L-R);
+  for(let t=0;t<=hi+1e-9;t+=0.05){const tx=x(t);el('line',{x1:tx,x2:tx,y1:top-6,y2:H-8,stroke:Math.abs(t)<1e-9?'var(--axis)':'var(--line)'},svg);
+    const lb=el('text',{x:tx,y:14,'text-anchor':'middle'},svg);lb.textContent=fmt(t,2)}
+  rows.forEach((r,i)=>{const y=top+i*rowH,v=r[3];const g=el('g',{},svg);
+    const lt=el('text',{x:8,y:y+rowH/2+4},g);const nm=`${r[0]} (${r[1]})`;const maxc=Math.floor((L-14)/6);lt.textContent=nm.length>maxc?nm.slice(0,maxc-1)+'…':nm;lt.style.fill='var(--fg)';
+    const x0=x(0),x1=x(v),bw=Math.max(Math.abs(x1-x0),1),bx=Math.min(x0,x1),bh=11,by=y+(rowH-bh)/2,rr=Math.min(4,bw/2);
+    const p=v>=0?`M${bx},${by}h${bw-rr}a${rr},${rr} 0 0 1 ${rr},${rr}v${bh-2*rr}a${rr},${rr} 0 0 1 -${rr},${rr}h-${bw-rr}z`:`M${bx+bw},${by}h-${bw-rr}a${rr},${rr} 0 0 0 -${rr},${rr}v${bh-2*rr}a${rr},${rr} 0 0 0 ${rr},${rr}h${bw-rr}z`;
+    el('path',{d:p,fill:v>=0?'var(--pos)':'var(--neg)'},g);
+    const ct=el('text',{x:W-R+10,y:y+rowH/2+4},g);ct.textContent=`${r[5]+r[6]} / ${r[1]} hisse`;
+    const hit=el('rect',{x:0,y,width:W,height:rowH,fill:'transparent'},g);
+    hit.addEventListener('mousemove',e=>showTip(e,`<b>${esc(r[0])}</b><br>Tipik ana etken: ${esc(r[2])}<br>Ortalama doğrulanmış bağ gücü: <b>${fmt(v)}</b><br>Güçlü/orta bağı olan: ${r[5]+r[6]} / ${r[1]} hisse<br>Güçlü ${r[5]} · Orta ${r[6]} · Zayıf ${r[7]} · Ters ${r[8]}`));
+    hit.addEventListener('mouseleave',hideTip);
+  });
+}
+
+/* ---------- 3. Small multiples ---------- */
+function mults(){
+  const host=document.getElementById('mults');host.innerHTML='';
+  DATA.feat.forEach(f=>{
+    const box=document.createElement('div');box.className='mult';
+    const last=f.v[f.v.length-1];
+    box.innerHTML=`<h3><b class="tk">${esc(f.t)}</b><span>${esc(f.f)}<br>son: ${fmt(last)}</span></h3>`;host.appendChild(box);
+    const W=Math.max(box.clientWidth-24,220),H=130,L=30,R=6,T=8,B=20,lo=-0.6,hi=1.0;
+    const svg=el('svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':`${f.t} ile ${f.f} arasındaki 52 haftalık kayan korelasyon`},box);
+    const n=f.v.length,x=i=>L+i/(n-1)*(W-L-R),y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
+    [-0.5,0,0.5,1].forEach(t=>{el('line',{x1:L,x2:W-R,y1:y(t),y2:y(t),stroke:t===0?'var(--axis)':'var(--line)','stroke-dasharray':t===0?'3 3':''},svg);const lb=el('text',{x:L-4,y:y(t)+3,'text-anchor':'end'},svg);lb.textContent=fmt(t,1)});
+    const yrs=[...new Set(f.d.map(d=>d.slice(0,4)))];
+    yrs.forEach(yr=>{const i=f.d.findIndex(d=>d.startsWith(yr));if(i<0||+yr%2)return;const lb=el('text',{x:x(i),y:H-5,'text-anchor':'middle'},svg);lb.textContent=yr});
+    let d='';f.v.forEach((v,i)=>{d+=(i?'L':'M')+x(i).toFixed(1)+','+y(v).toFixed(1)});
+    el('path',{d,fill:'none',stroke:'var(--pos)','stroke-width':2,'stroke-linejoin':'round'},svg);
+    el('circle',{cx:x(n-1),cy:y(last),r:4,fill:'var(--pos)',stroke:'var(--surface)','stroke-width':2},svg);
+    const cross=el('line',{y1:T,y2:H-B,stroke:'var(--muted)','stroke-width':1,visibility:'hidden'},svg);
+    const mk=el('circle',{r:4,fill:'var(--pos)',stroke:'var(--surface)','stroke-width':2,visibility:'hidden'},svg);
+    const hit=el('rect',{x:L,y:0,width:W-L-R,height:H,fill:'transparent'},svg);
+    hit.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();const px=(e.clientX-rc.left)*(W/rc.width);const i=Math.max(0,Math.min(n-1,Math.round((px-L)/(W-L-R)*(n-1))));
+      cross.setAttribute('x1',x(i));cross.setAttribute('x2',x(i));cross.setAttribute('visibility','visible');mk.setAttribute('cx',x(i));mk.setAttribute('cy',y(f.v[i]));mk.setAttribute('visibility','visible');
+      showTip(e,`${f.d[i]}<br>52h korelasyon: <b>${fmt(f.v[i])}</b>`)});
+    hit.addEventListener('mouseleave',()=>{cross.setAttribute('visibility','hidden');mk.setAttribute('visibility','hidden');hideTip()});
+  });
+}
+
+/* ---------- 4. Table ---------- */
+const COLS=[
+  {k:'ticker',h:'Hisse',cls:'tk'},{k:'sirket',h:'Şirket',cls:'co'},{k:'sektor',h:'Sektör',cls:'sek'},
+  {k:'en_iyi_temel_etken',h:'Temel etken'},{k:'temel_ham_kor_1y',h:'1y',n:1},{k:'temel_ham_kor_3y',h:'3y',n:1},
+  {k:'temel_ham_kor_5y',h:'5y',n:1},{k:'temel_kismi_kor',h:'Kısmi',n:1},{k:'temel_t',h:'t',n:1,d:1},
+  {k:'temel_sonuc',h:'Sonuç',pill:1},{k:'tarama_1',h:'Veri taraması',scan:1},{k:'usdtry_kismi_kor',h:'USD/TL',n:1}];
+let sortK='temel_kismi_kor',sortDir=-1,openT=null;
+function heat(v){if(v==null)return '';const a=Math.min(Math.abs(v),0.7)/0.7*0.32;return `background:rgba(var(--${v>=0?'pos':'neg'}-rgb),${a.toFixed(3)})`}
+function initTable(){
+  const th=document.querySelector('#tbl thead');const tr=document.createElement('tr');
+  COLS.forEach(c=>{const t=document.createElement('th');if(c.n)t.style.textAlign='right';const b=document.createElement('button');b.textContent=c.h;b.dataset.k=c.k;
+    b.addEventListener('click',()=>{if(sortK===c.k)sortDir*=-1;else{sortK=c.k;sortDir=c.n?-1:1}renderTable()});t.appendChild(b);tr.appendChild(t)});
+  th.appendChild(tr);
+  const secs=[...new Set(DATA.rows.map(r=>r[C.ana_sektor]))].sort((a,b)=>a.localeCompare(b,'tr'));
+  const fs=document.getElementById('fs');secs.forEach(s=>{const o=document.createElement('option');o.textContent=s;fs.appendChild(o)});
+  ['q','fs','fv'].forEach(id=>document.getElementById(id).addEventListener('input',renderTable));
+  renderTable();
+}
+function renderTable(){
+  const q=document.getElementById('q').value.trim().toLocaleLowerCase('tr');const fs=document.getElementById('fs').value,fv=document.getElementById('fv').value;
+  let rows=DATA.rows.filter(r=>(!fs||r[C.ana_sektor]===fs)&&(!fv||r[C.temel_sonuc]===fv)&&(!q||[r[C.ticker],r[C.sirket],r[C.sektor],r[C.ana_sektor],r[C.en_iyi_temel_etken],r[C.tarama_1]].join(' ').toLocaleLowerCase('tr').includes(q)));
+  const k=C[sortK],num=COLS.find(c=>c.k===sortK)?.n;
+  rows.sort((a,b)=>{let x=a[k],y=b[k];if(sortK==='temel_kismi_kor'){x=x==null?null:Math.abs(x);y=y==null?null:Math.abs(y)}
+    if(x==null)return 1;if(y==null)return -1;return (num?(x-y):String(x).localeCompare(String(y),'tr'))*sortDir});
+  document.querySelectorAll('#tbl th button').forEach(b=>b.setAttribute('aria-sort',b.dataset.k===sortK?(sortDir>0?'ascending':'descending'):'none'));
+  document.getElementById('cnt').textContent=`${rows.length} hisse`;
+  const tb=document.querySelector('#tbl tbody');const parts=[];
+  rows.forEach(r=>{parts.push(`<tr class="row" tabindex="0" data-t="${esc(r[C.ticker])}">`+COLS.map(c=>{const v=r[C[c.k]];
+    if(c.pill)return `<td>${pill(v)}</td>`;
+    if(c.scan){if(!v||!r[C.tarama_1_anlamli])return '<td class="note">–</td>';return `<td>${esc(v)} <span class="mono note">${fmt(r[C.tarama_1_kismi_kor])}</span></td>`}
+    if(c.n)return `<td class="n" style="${c.k.startsWith('temel_')&&!c.d?heat(v):''}">${fmt(v,c.d?1:2)}</td>`;
+    return `<td class="${c.cls||''}" title="${esc(v)}">${esc(v||'–')}</td>`}).join('')+'</tr>');
+    if(openT===r[C.ticker])parts.push(detailRow(r));});
+  tb.innerHTML=parts.join('');
+  tb.querySelectorAll('tr.row').forEach(tr=>{const f=()=>{openT=openT===tr.dataset.t?null:tr.dataset.t;renderTable()};tr.addEventListener('click',f);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f()}})});
+}
+function detailRow(r){
+  const det=DATA.det[r[C.ticker]]||[];
+  const dh=['Etken','Beklenen','1y','3y','5y','10y','Kısmi','t','β','Sonuç','q','İki yarıda aynı yön','Kayan kor. aynı işaret','1h gecikmeli','4 haftalık (tüm)','Seviye 3y (USD)'];
+  const body=det.map(d=>`<tr><td>${esc(d[0])}</td><td class="n">${esc(d[1])}</td>${[2,3,4,5,6].map(i=>`<td class="n" style="${heat(d[i])}">${fmt(d[i])}</td>`).join('')}<td class="n">${fmt(d[7],1)}</td><td class="n">${fmt(d[8])}</td><td>${pill(d[9])}</td><td class="n">${fmt(d[14],3)}</td><td class="n">${d[15]==null?'–':(d[15]?'evet':'hayır')}</td><td class="n">${d[10]==null?'–':Math.round(d[10])+'%'}</td><td class="n">${fmt(d[11])}</td><td class="n">${fmt(d[12])}</td><td class="n">${fmt(d[13])}</td></tr>`).join('');
+  const scan=r[C.tarama_1]?`Veri taramasında en güçlü: <b>${esc(r[C.tarama_1])}</b> (kısmi ${fmt(r[C.tarama_1_kismi_kor])}${r[C.tarama_1_anlamli]?'':', istatistiksel olarak anlamlı değil'})`:'';
+  return `<tr class="detail"><td colspan="${COLS.length}"><div class="detail-grid"><p><b>${esc(r[C.sirket])}</b> — ${esc(r[C.gerekce])} <span class="note">(temel bağlantı güveni: ${esc(r[C.temel_guven])}; ${r[C.hafta_sayisi]} hafta veri, birincil pencere ${esc(r[C.birincil_pencere])})</span></p><p class="note">${scan}</p>${det.length?`<div class="scroll"><table><thead><tr>${dh.map(h=>`<th style="padding:6px 8px">${h}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>`:''}</div></td></tr>`;
+}
+function drawAll(){topChart();sekChart();mults()}
+drawAll();initTable();
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawAll,150)});
+</script>

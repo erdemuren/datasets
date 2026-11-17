@@ -1,0 +1,66 @@
+ana_sektor,hisse_sayisi,ana_etken,ort_dogrulanmis_bag,medyan_teyit_skor,medyan_temel_kismi_kor,medyan_temel_ham_kor,guclu,orta,zayif,ters,medyan_xu100_kor,medyan_usdtry_beta
+Havayolu,2,Küresel havayolları (JETS),0.2381,0.2381,0.0236,0.0887,0,2,0,0,0.7612,-0.0391
+Havacılık Hizmetleri,3,Küresel havayolları (JETS),0.2160,0.1396,0.1396,0.2323,1,0,2,0,0.5900,0.2143
+Petrol / Rafineri / LPG,3,Brent petrol,0.2145,0.2239,0.2239,0.1477,1,1,1,0,0.6536,0.2225
+Demir-Çelik,5,Çelik (HRC sıcak sac),0.2094,0.2020,0.2020,0.1742,0,4,1,0,0.6176,0.2332
+"Madencilik (altın, bakır, diğer)",9,Metal & madencilik (XME),0.0683,-0.0112,-0.0112,0.0648,0,3,5,0,0.5691,0.1282
+Süt Ürünleri,3,Süt (ABD Class III),0.0571,0.0473,0.0473,0.0277,0,0,3,0,0.3579,-0.0067
+Büyük holdingler,8,Doğalgaz (Avrupa TTF),0.0539,0.0873,-0.0183,0.0036,0,1,7,0,0.6664,0.0257
+İçecek,5,Buğday,0.0424,0.0974,-0.0974,-0.0934,0,1,4,0,0.5225,0.0067
+Otomotiv / Traktör,7,Küresel otomotiv (CARZ),0.0400,0.0399,0.0038,0.1008,0,0,7,0,0.6208,0.0377
+Petrokimya / Sentetik Elyaf,6,Brent petrol,0.0359,0.0274,0.0274,0.0681,0,1,5,0,0.5518,0.1714
+Savunma,7,Savunma & havacılık (ITA),0.0258,0.0423,0.0423,0.0991,0,1,6,0,0.4260,-0.0329
+Plastik / Ambalaj,23,Brent petrol,0.0223,0.0884,-0.0884,-0.0724,0,0,22,0,0.5193,-0.2546
+İnşaat / Taahhüt,7,Çelik (HRC sıcak sac),0.0192,0.0672,0.0302,-0.0646,0,0,7,0,0.4282,-0.1885
+Faktoring / Leasing / Varlık Yönetimi,14,BIST Banka endeksi,0.0179,0.0629,-0.0499,-0.0265,0,1,13,0,0.4022,-0.2538
+Kağıt Ambalaj / Matbaa,9,Selüloz/kağıt hamuru (Suzano),0.0168,0.0672,-0.0672,0.0220,0,0,9,0,0.3743,-0.1536
+Otomotiv Yan Sanayi,9,Küresel otomotiv (CARZ),0.0168,0.0746,-0.0746,-0.0428,0,0,9,0,0.5192,-0.0799
+Cam / Seramik,9,Doğalgaz (Avrupa TTF),0.0141,0.0312,-0.0312,-0.0741,0,0,9,0,0.5418,-0.0899
+Hazır Giyim / Perakende,10,Pamuk,0.0138,0.0707,-0.0339,-0.0175,0,0,10,0,0.4708,-0.1407
+Tekstil (dokuma / ev tekstili),12,Pamuk,0.0113,0.0482,-0.0304,0.0310,0,0,12,0,0.4384,-0.0748
+Gıda (çeşitli),21,Tarım & agribusiness (MOO),0.0101,0.1007,-0.1007,-0.0196,0,1,19,0,0.4901,-0.1196
+Çimento / Beton,17,Kömür (Rotterdam API2),0.0091,0.0515,-0.0515,-0.0557,0,0,17,0,0.5156,-0.0733
+Akaryakıt Dağıtım / Ticaret,2,Brent petrol,0.0000,-0.0301,-0.0301,-0.0372,0,0,2,0,0.4190,-0.1780
+Elektrik Üretimi,27,Doğalgaz (Avrupa TTF),0.0000,-0.0071,-0.0071,-0.0304,0,0,25,0,0.4867,-0.1470
+Elektrik Ekipmanı / Trafo,11,Bakır,0.0000,0.0056,0.0056,0.0346,0,0,11,0,0.3822,-0.1356
+Elektrik / Doğalgaz Dağıtım,6,Doğalgaz (Avrupa TTF),0.0000,0.0665,-0.0336,-0.0581,0,0,6,0,0.5075,-0.1107
+Elektrik Üretimi (kömür),4,Kömür (Rotterdam API2),0.0000,0.1214,0.1214,0.0203,0,0,4,0,0.4699,-0.1009
+Bisküvi / Çikolata / Şekerleme,6,Şeker,0.0000,0.0567,-0.0439,-0.0257,0,0,6,0,0.4778,-0.1462
+Borsa Yatırım Fonu (doğrulama),1,Altın (ons),0.0000,,,,0,0,0,0,,
+Aracı Kurum,10,BIST 100 (piyasa),0.0000,0.0000,0.0000,0.4785,0,0,10,0,0.4785,-0.0840
+Banka,13,Avrupa bankaları (EUFN),0.0000,0.1249,-0.1249,-0.0018,0,0,13,0,0.7011,-0.2411
+Beyaz Eşya / Dayanıklı Tüketim,5,Çelik (HRC sıcak sac),0.0000,0.0871,-0.0871,-0.0346,0,0,5,0,0.6787,-0.0793
+Bakır / Alüminyum / Kablo,6,Bakır,0.0000,-0.0185,-0.0185,-0.0021,0,0,6,0,0.5104,0.1749
+BT Donanım Dağıtımı,9,Yarı iletken / teknoloji (SOXX),0.0000,0.0180,-0.0062,0.0601,0,0,8,0,0.5199,-0.0089
+Kimya / Boya,13,Brent petrol,0.0000,0.0495,-0.0495,-0.0578,0,0,12,0,0.4654,-0.2130
+Kağıt / Karton Üretimi,4,Selüloz/kağıt hamuru (Suzano),0.0000,0.0313,0.0313,0.0603,0,0,4,0,0.5602,-0.0531
+Holding,35,BIST 100 (piyasa),0.0000,0.0000,0.0000,0.3918,0,0,35,0,0.3918,-0.1419
+Gıda Perakende,7,Buğday,0.0000,0.0887,-0.0276,-0.0421,0,0,7,0,0.6681,-0.1265
+Gayrimenkul (GYO),58,Altın (ons),0.0000,-0.0157,-0.0157,0.0176,0,0,53,0,0.4984,-0.1581
+Girişim Sermayesi Yat. Ort.,8,BIST 100 (piyasa),0.0000,0.0000,0.0000,0.4983,0,0,8,0,0.4983,-0.1681
+Gübre,3,Azotlu gübre/amonyak (CF Industries),0.0000,0.0701,-0.0475,-0.0832,0,0,3,0,0.5626,-0.0500
+Güneş / Rüzgar ekipmanı,7,Güneş enerjisi (TAN),0.0000,0.1042,-0.0574,0.0146,0,0,7,0,0.5162,-0.2302
+Et / Restoran,4,Canlı sığır,0.0000,-0.0045,0.0045,0.0135,0,0,4,0,0.4462,-0.0655
+Et / Yem / Hayvancılık,5,Mısır,0.0000,0.0345,0.0150,0.0152,0,0,5,0,0.5092,-0.0820
+Denizcilik,6,Kuru yük navlunu (BDRY),0.0000,0.0564,0.0564,0.1049,0,0,6,0,0.5538,0.6592
+Döküm / Metal Parça,5,Çelik (HRC sıcak sac),0.0000,0.0070,0.0070,0.0239,0,0,5,0,0.4183,-0.0640
+Mobilya / Ağaç Ürünleri,7,Orman ürünleri & kağıt (WOOD),0.0000,0.0226,0.0090,0.0265,0,0,7,0,0.4802,-0.1975
+Menkul Kıymet Yatırım Ortaklığı,9,BIST 100 (piyasa),0.0000,0.0000,0.0000,0.4533,0,0,9,0,0.4533,-0.1662
+Medya,7,BIST 100 (piyasa),0.0000,0.0000,0.0000,0.3362,0,0,7,0,0.3832,-0.1778
+Lojistik / Taşımacılık,9,Motorin / jet yakıtı (ULSD),0.0000,0.0452,-0.0452,-0.0508,0,0,9,0,0.3618,0.0024
+Sigorta / Emeklilik,6,Dolar/TL,0.0000,0.1085,-0.1085,-0.0065,0,0,6,0,0.5973,-0.2114
+Sağlık / İlaç,14,İlaç & biyoteknoloji (IBB),0.0000,0.0254,0.0254,0.0681,0,0,14,0,0.4926,-0.0933
+Perakende (gıda dışı),3,Dolar/TL,0.0000,0.0532,-0.0532,-0.0675,0,0,3,0,0.4630,-0.2502
+Lastik,2,Brent petrol,0.0000,0.0762,-0.0471,0.0178,0,0,2,0,0.6160,0.2157
+Makine İmalatı,8,Çelik (HRC sıcak sac),0.0000,-0.0039,-0.0039,0.0026,0,0,8,0,0.4141,-0.0579
+Tarım İlacı / Tarım Teknolojisi,3,Tarım & agribusiness (MOO),0.0000,0.0050,0.0050,0.0598,0,0,3,0,0.6132,1.5962
+Tahıl / Un / Makarna,10,Buğday,0.0000,0.0136,-0.0020,0.0001,0,0,9,0,0.3918,-0.2735
+Spor Kulübü,4,Euro/TL,0.0000,-0.0387,-0.0387,0.0167,0,0,4,0,0.3925,-0.1974
+Telekomünikasyon,6,Gelişen piyasalar (EEM),0.0000,0.0619,-0.0680,0.0227,0,0,6,0,0.5415,-0.1359
+Tekstil (iplik),5,Pamuk,0.0000,-0.0341,-0.0341,0.0104,0,0,5,0,0.4524,-0.0908
+Teknoloji / Yazılım,28,Yarı iletken / teknoloji (SOXX),0.0000,-0.0132,-0.0132,0.0460,0,0,26,0,0.4335,-0.0924
+Turizm / Otel,13,Euro/TL,0.0000,0.0265,0.0265,0.1014,0,0,13,0,0.4383,-0.1480
+Çelik İşleme / Boru / Tel,17,Çelik (HRC sıcak sac),0.0000,-0.0310,-0.0310,0.0000,0,0,17,0,0.4667,-0.0571
+Yeni halka arz / sınıflandırılmadı,10,,0.0000,,,,0,0,0,0,0.3118,0.1109
+İklimlendirme / Isıtma,6,Bakır,0.0000,0.1012,-0.1012,-0.0340,0,0,5,0,0.4867,-0.1402
+Şeker,3,Şeker,0.0000,-0.0414,-0.0414,-0.0917,0,0,3,0,0.5580,-0.1845
